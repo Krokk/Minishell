@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freejoin.c                                      :+:      :+:    :+:   */
+/*   ft_freejoinstr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 01:08:10 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/17 14:02:22 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/21 21:00:24 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_freejoin(char *dst, char *src)
+char		*ft_freejoinstr(char *dst, char *src)
 {
 	char	*tmp;
 

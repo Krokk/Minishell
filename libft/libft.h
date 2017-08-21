@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: remi <remi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 20:16:41 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/15 16:46:57 by remi             ###   ########.fr       */
+/*   Updated: 2017/08/19 12:52:14 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ char				*ft_strjoinmulti(char const *s1, char const *s2,
 		char const *s3, char const *s4);
 size_t				ft_strcspn(const char *str1, char str2);
 void				ft_putnstr(char const *s, size_t n);
-char		*ft_freejoin(char *dst, char *src);
+char		*ft_freejoinstr(char *dst, char *src);
+void   ft_freearraystr(char **array);
 #endif
