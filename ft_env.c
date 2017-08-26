@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/22 01:42:59 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/26 02:21:21 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,47 +60,45 @@ void exec_setenv(char **commands, t_env *venv)
         if (!find_t_env(venv, commands))
             add_t_env(venv, commands);
         else
-            {
-                ft_putendl("Environment value already exist would you like to override ?");
-                ret = read(0, &buf, 1) && ft_strcmp(buf, "\n");
-                buf[ret] = '\0';
-                if ((ft_strcmp(buf,"y")) || ft_strncmp(buf, "Y", 2))
-                {
-                    remove_t_env(venv, commands);
-                    add_t_env(venv, commands);
-                }
-                else
-                    ;
-            }
+        {
+            // ft_putendl("Environment value already exist would you like to override ?");
+            // ret = read(0, &buf, 1) && ft_strcmp(buf, "\n");
+            // buf[ret] = '\0';
+            // if ((ft_strcmp(buf,"y")) || ft_strncmp(buf, "Y", 2))
+            // {
+              remove_t_env(&venv, commands);
+              add_t_env(venv, commands);
+            // }
+            // else
+            // 	;
+        }
     }
 }
 
-t_env *remove_t_env(t_env *venv, char **commands)
+void remove_t_env(t_env **venv, char **commands)
 {
-    t_env *tmp;
-    t_env *previous;
+	t_env	*free_this;
+	t_env *tmp;
+	int len;
 
-    previous = venv;
-    if (!ft_strcmp(commands[1], venv->content))
-    {
-        venv = venv->next;
-        free(previous);
-    }
-    else
-    {
-        tmp = previous->next;
-        while (tmp)
-        {
-            if (!ft_strcmp(commands[1], tmp->content))
-            {
-                previous->next = tmp->next;
-                free(tmp);
-                break;
-            }
-            previous = tmp;
-            tmp = tmp->next;
-        }
-    }
+tmp = NULL;
+
+ len = ft_strlen(commands[1]);
+		while (*venv)
+		{
+			if (!ft_strncmp(commands[1], (*venv)->content, len))
+			{
+				free_this = *venv;
+				*venv = free_this->next;
+			  tmp->next = *venv;
+				free(free_this->content);
+				free(free_this);
+				if (commands[1])
+					break ;
+			}
+				tmp = *venv;
+				*venv = (*venv)->next;
+		}
 }
 
 void add_t_env(t_env *venv, char **commands)
@@ -126,7 +124,7 @@ int find_t_env(t_env *venv, char **commands)
     while (tmp)
     {
         if (ft_strncmp(commands[1], tmp->content, ft_strlen(commands[1])) == 0)
-            return (1);
+							return (1);
         tmp = tmp->next;
     }
     return (0);
