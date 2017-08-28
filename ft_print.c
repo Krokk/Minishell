@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 19:41:19 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 01:56:53 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 03:08:54 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void exec_echo(char **commands)
 }
 
 
-static int check_cd(char **commands, t_env *venv)
+static int check_cd(char **commands, t_env **venv)
 {
 	if (commands[2])
 	{
@@ -54,21 +54,21 @@ static int check_cd(char **commands, t_env *venv)
 	}
 	if (!ft_strncmp(commands[1], "~", 1))
 	{
-		if (find_str_t_env(&venv, "HOME="))
+		if (find_str_t_env(venv, "HOME="))
 			return (1);
 		else
 			ft_putendl("'HOME' variable not found");
 	}
 	if (!ft_strncmp(commands[1], "--", 2))
 	{
-		if (find_str_t_env(&venv, "HOME="))
+		if (find_str_t_env(venv, "HOME="))
 			return (1);
 		else
 			ft_putendl("'HOME' variable not found");
 	}
 	if (!ft_strncmp(commands[1], "-", 1))
 	{
-		if (find_str_t_env(&venv, "OLDPWD="))
+		if (find_str_t_env(venv, "OLDPWD="))
 			return (2);
 		else
 			ft_putendl("'OLDPWD' variable not found");
@@ -76,7 +76,7 @@ static int check_cd(char **commands, t_env *venv)
 	return (9);
 }
 
-static int parse_cd(char **commands, t_env *venv)
+static int parse_cd(char **commands, t_env **venv)
 {
 	int ret;
 	ret = check_cd(commands, venv);
@@ -98,7 +98,7 @@ static int parse_cd(char **commands, t_env *venv)
 	return (0);
 }
 
-void exec_cd(char **cmd, t_env *venv)
+void exec_cd(char **cmd, t_env **venv)
 {
 	char tmp[1024 + 1];
 	char *cwd;
@@ -109,11 +109,11 @@ void exec_cd(char **cmd, t_env *venv)
 	oldpwd = getcwd(tmp, 1024);
 	if ((!access(cmd[1], 1)) && chdir(cmd[1]) == 0 && !ret)
 	{
-		ft_modify_tenv(&venv, "OLDPWD=", oldpwd);
+		ft_modify_tenv(venv, "OLDPWD=", oldpwd);
 		ft_putstr("directory changed to : ");
 		ft_putendl(cmd[1]);
 		cwd = getcwd(tmp, 1024);
-		ft_modify_tenv(&venv, "PWD=", cwd);
+		ft_modify_tenv(venv, "PWD=", cwd);
 	}
 	else
 		perror(cmd[1]);

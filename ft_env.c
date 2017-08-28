@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 01:57:27 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 03:13:36 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_env *get_venv(char **venv)
 }
 
 /*
-   remove_t_env ne marche pas sur le premier et dernier maillon
 
    faire tout paser par access pour les appels de commande
 
@@ -55,7 +54,7 @@ aller chercher les binaire dans les path et verifier avec acces( si return 0) ex
 bonus SHLVL ; niveau de profondeur des shell incrementer
 */
 
-void exec_setenv(char **commands, t_env *venv)
+void exec_setenv(char **commands, t_env **venv)
 {
 	int i;
 
@@ -66,7 +65,7 @@ void exec_setenv(char **commands, t_env *venv)
 		ft_putendl("Usage : setenv <Environment variable> <Value>");
 	else
 	{
-		if (!find_t_env(&venv, commands))
+		if (!find_t_env(venv, commands))
 			add_t_env(venv, commands);
 		else
 		{
@@ -76,33 +75,29 @@ void exec_setenv(char **commands, t_env *venv)
 	}
 }
 
-void remove_t_env(t_env *venv, char **commands)
+void remove_t_env(t_env **venv, char **commands)
 {
 	t_env	*free_this;
-	t_env *tmp;
 
-	tmp = NULL;
-
-	while (venv)
+	while (*venv)
 	{
-		if (t_env_compare(venv->content, commands))
+		if (t_env_compare((*venv)->content, commands))
 		{
-			free_this = venv;
-			if (free_this->next)
-				venv = free_this->next;
-			if (tmp && venv->next)
-				tmp->next = venv;
+			free_this = *venv;
+			// if (free_this->next)
+			*venv = free_this->next;
+			// if (tmp && venv->next)
 			free(free_this->content);
 			free(free_this);
 			if (commands[1])
 				break ;
 		}
-		tmp = venv;
-		venv = venv->next;
+
+		venv = &(*venv)->next;
 	}
 }
 
-void add_t_env(t_env *venv, char **commands)
+void add_t_env(t_env **venv, char **commands)
 {
 	t_env *tmp;
 	char *str_tmp;
@@ -114,7 +109,7 @@ void add_t_env(t_env *venv, char **commands)
 	ft_strdel(&str_buf);
 	tmp->content = ft_strdup(str_tmp);
 	ft_strdel(&str_tmp);
-	ft_lst_add_tenv(&venv, tmp);
+	ft_lst_add_tenv(venv, tmp);
 }
 
 int find_t_env(t_env **venv, char **commands)
@@ -157,7 +152,7 @@ int find_str_t_env(t_env **venv, char *str)
 }
 
 
-void exec_unsetenv(char **commands, t_env *venv)
+void exec_unsetenv(char **commands, t_env **venv)
 {
 	int i;
 
@@ -166,7 +161,7 @@ void exec_unsetenv(char **commands, t_env *venv)
 		;
 	if (i != 3)
 		ft_putendl("Usage : unsetenv <Environment variable>");
-	else if (find_t_env(&venv, commands))
+	else if (find_t_env(venv, commands))
 		remove_t_env(venv, commands);
 	else
 		ft_putendl("Environment Variable doesn't exist");

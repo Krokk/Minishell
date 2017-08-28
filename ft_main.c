@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 01:55:02 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 03:10:26 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void get_request(char **request)
 		ft_putendl("DEBUG READ");
 }
 
-static void check_ifbuiltin(char **commands, t_env *venv)
+static void check_ifbuiltin(char **commands, t_env **venv)
 {
 	if (ft_strequ(commands[0], "echo"))
 		exec_echo(commands);
@@ -38,7 +38,7 @@ static void check_ifbuiltin(char **commands, t_env *venv)
 	else if (ft_strequ(commands[0], "unsetenv"))
 		exec_unsetenv(commands, venv);
 	else if (ft_strequ(commands[0], "env"))
-		print_env(venv);
+		print_env(*venv);
 	else if (ft_strequ(commands[0], "pwd"))
 		ft_putendl(print_pwd());
 	else if (ft_strequ(commands[0], "ls"))
@@ -68,8 +68,7 @@ int main(int ac, char **argv, char **venv)
 		commands = ft_strsplit(request,' ');
 		free(request);
 		parsed_commands = ft_strtrim(*commands);
-		if (check_before_exec(envv, commands))
-			check_ifbuiltin(commands, envv);
+		check_ifbuiltin(commands, &envv);
 		ft_freearraystr(commands);
 		free(parsed_commands);
 	}

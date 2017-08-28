@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:10:04 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 01:57:54 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 03:02:23 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ int ft_modify_tenv(t_env **venv, char *new, char *contents)
 	return (0);
 }
 
-char *get_venv_value(t_env *venv, char *search)
+char *get_venv_value(t_env **venv, char *search)
 {
 	t_env *tmp;
 
-	tmp = venv;
+	tmp = *venv;
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->content, search, ft_strlen(search)))
