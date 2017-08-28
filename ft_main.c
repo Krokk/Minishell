@@ -6,25 +6,26 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 03:10:26 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 05:17:00 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void get_request(char **request)
+static void get_request(char **request, t_env **venv)
 {
 	int		ret;
 	char	buf[2];
 
-	*request = ft_memalloc(sizeof(char));
+	if (!(*request = ft_memalloc(sizeof(char))))
+		ft_error(0, venv, "Malloc failed");
 	while ((ret = read(0, &buf, 1)) && ft_strcmp(buf, "\n"))
 	{
 		buf[ret] = '\0';
 		*request = ft_freejoinstr(*request, buf);
 	}
 	if (!ret)
-		ft_putendl("DEBUG READ");
+		ft_error(0, venv, "Read Failure");
 }
 
 static void check_ifbuiltin(char **commands, t_env **venv)
@@ -62,9 +63,9 @@ int main(int ac, char **argv, char **venv)
 	while (1)
 	{
 		ft_putstr("$> ");
-		get_request(&request);
+		get_request(&request, &envv);
 		if (ft_strequ(request, "exit"))
-			exit(0);
+			exit_shell();
 		commands = ft_strsplit(request,' ');
 		free(request);
 		parsed_commands = ft_strtrim(*commands);

@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freejoinstr.c                                   :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 01:08:10 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 05:08:32 by rfabre           ###   ########.fr       */
+/*   Created: 2017/08/28 03:42:40 by rfabre            #+#    #+#             */
+/*   Updated: 2017/08/28 05:08:48 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char		*ft_freejoinstr(char *dst, char *src)
+int ft_error(int erno, t_env **venv, char *msg)
 {
-	char	*tmp;
+    ft_putendl_fd("Minishell : ", 2);
+    if (erno == 0)
+    {
+        ft_putendl_fd(msg, 2);
+        remove_t_env(venv, NULL);
+    }
+        exit (1);
+}
 
-	if (!(tmp = malloc(sizeof(char) * (ft_strlen(dst) + 1))))
-		return (NULL);
-	tmp[0] = '\0';
-	ft_strcpy(tmp, dst);
-	ft_strdel(&dst);
-	if ((dst = ft_strjoin(tmp, src)) == NULL)
-		return (NULL);
-	ft_strdel(&tmp);
-	return (dst);
+//
+int exit_shell(void)
+{
+    exit (0);
 }

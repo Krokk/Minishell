@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 19:41:19 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 03:08:54 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 07:17:56 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,77 +44,90 @@ void exec_echo(char **commands)
 		ft_putstr("\n");
 }
 
-
-static int check_cd(char **commands, t_env **venv)
+static int get_size(char **commands)
 {
-	if (commands[2])
+	int i;
+
+	i = 0;
+	while (commands[i])
+		i++;
+	return (i);
+}
+
+int check_cd(char **commands, t_env **venv, int size)
+{
+	if (ft_strequ(commands[1], "~") || ft_strequ(commands[1], "--") || size == 1)
 	{
-		ft_putendl("Usage : cd <directory>");
-		return (9);
-	}
-	if (!ft_strncmp(commands[1], "~", 1))
-	{
-		if (find_str_t_env(venv, "HOME="))
+		if (find_t_env_strr(venv, "HOME"))
 			return (1);
 		else
 			ft_putendl("'HOME' variable not found");
 	}
-	if (!ft_strncmp(commands[1], "--", 2))
+	else if (ft_strequ(commands[1], "-"))
 	{
-		if (find_str_t_env(venv, "HOME="))
-			return (1);
-		else
-			ft_putendl("'HOME' variable not found");
-	}
-	if (!ft_strncmp(commands[1], "-", 1))
-	{
-		if (find_str_t_env(venv, "OLDPWD="))
+		if (find_t_env_strr(venv, "OLDPWD"))
 			return (2);
 		else
 			ft_putendl("'OLDPWD' variable not found");
 	}
-	return (9);
-}
-
-static int parse_cd(char **commands, t_env **venv)
-{
-	int ret;
-	ret = check_cd(commands, venv);
-
-	if (ret == 1)
-	{
-		ft_bzero(commands[1], ft_strlen(commands[1]));
-		commands[1] = ft_strsub(get_venv_value(venv, "HOME"), 5,
-				ft_strlen(get_venv_value(venv, "HOME=")) - 4);
-	}
-	else if (ret == 2)
-	{
-		ft_bzero(commands[1], ft_strlen(commands[1]));
-		commands[1] = ft_strsub(get_venv_value(venv, "OLDPWD"), 7,
-				ft_strlen(get_venv_value(venv, "OLDPWD=")) - 6);
-	}
-	else if (ret == 9)
-		return (1);
+	else if (!(ft_strncmp(commands[1], "~", 1)) && (ft_strlen(commands[1]) > 1))
+		return (3);
 	return (0);
 }
 
-void exec_cd(char **cmd, t_env **venv)
+char *parse_cd(int ret, t_env **venv, char **commands)
+{
+	if (ret == 1)
+	{
+		return(ft_strsub(get_venv_value(venv, "HOME"), 5,
+				ft_strlen(get_venv_value(venv, "HOME")) - 3));
+	}
+	else if (ret == 2)
+	{
+		return(ft_strsub(get_venv_value(venv, "OLDPWD"), 7,
+				ft_strlen(get_venv_value(venv, "OLDPWD")) - 5));
+	}
+	if (ret == 3)
+		return (ft_strjoin("/Users/", (commands[1] + 1)));
+	if (ret == 0)
+		return (ft_strdup(commands[1]));
+	return (NULL);
+}
+
+void do_cd(char *path, t_env **venv)
 {
 	char tmp[1024 + 1];
 	char *cwd;
 	char *oldpwd;
-	int  ret;
 
-	ret = parse_cd(cmd, venv);
 	oldpwd = getcwd(tmp, 1024);
-	if ((!access(cmd[1], 1)) && chdir(cmd[1]) == 0 && !ret)
+	if ((!access(path, 1)) && chdir(path) == 0)
 	{
 		ft_modify_tenv(venv, "OLDPWD=", oldpwd);
 		ft_putstr("directory changed to : ");
-		ft_putendl(cmd[1]);
+		ft_putendl(path);
 		cwd = getcwd(tmp, 1024);
 		ft_modify_tenv(venv, "PWD=", cwd);
 	}
 	else
-		perror(cmd[1]);
+		perror(path);
+}
+
+void exec_cd(char **cmd, t_env **venv)
+{
+
+	int  ret;
+	int	 size;
+	char *path;
+
+	size = get_size(cmd);
+	if (size != 2 && size != 1)
+		ft_putendl("usage : cd <directory>");
+	else
+	{
+		ret = check_cd(cmd, venv, size);
+		path = parse_cd(ret, venv, cmd);
+		do_cd(path, venv);
+		free(path);
+	}
 }

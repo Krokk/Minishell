@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 03:13:36 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 05:54:28 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_env *get_venv(char **venv)
 	i = 0;
 	while (venv[i])
 	{
-		tmp = ft_memalloc(sizeof(t_env));
+		if (!(tmp = ft_memalloc(sizeof(t_env))))
+			exit (1);
 		tmp->content = ft_strdup(venv[i]);
 		ft_lst_add_tenv(&lst, tmp);
 		i++;
@@ -81,18 +82,15 @@ void remove_t_env(t_env **venv, char **commands)
 
 	while (*venv)
 	{
-		if (t_env_compare((*venv)->content, commands))
+		if (find_t_env_array((*venv)->content, commands))
 		{
 			free_this = *venv;
-			// if (free_this->next)
 			*venv = free_this->next;
-			// if (tmp && venv->next)
 			free(free_this->content);
 			free(free_this);
 			if (commands[1])
 				break ;
 		}
-
 		venv = &(*venv)->next;
 	}
 }
@@ -119,14 +117,14 @@ int find_t_env(t_env **venv, char **commands)
 	tmp = *venv;
 	while (tmp)
 	{
-		if (t_env_compare(tmp->content, commands))
+		if (find_t_env_array(tmp->content, commands))
 			return (1);
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
-int t_env_compare(char *env, char **search)
+int find_t_env_array(char *env, char **search)
 {
 	int len;
 
@@ -137,17 +135,30 @@ int t_env_compare(char *env, char **search)
 	return (0);
 }
 
-int find_str_t_env(t_env **venv, char *str)
+int find_t_env_strr(t_env **venv, char *str)
 {
+	int i;
 	t_env *tmp;
 
 	tmp = *venv;
+	i = 0;
 	while (tmp)
 	{
-		if (ft_strequ(str, tmp->content))
+		if (find_t_env_str(tmp->content, str))
 			return (1);
 		tmp = tmp->next;
 	}
+	return (0);
+}
+
+int find_t_env_str(char *venv, char *str)
+{
+	int len;
+
+	len = ft_strlen(str);
+	if (!ft_strncmp(venv, str, len))
+		if (!ft_strncmp((venv + len), "=", 1))
+			return (1);
 	return (0);
 }
 
