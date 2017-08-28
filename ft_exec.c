@@ -6,15 +6,15 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/21 22:27:04 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/28 01:56:38 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_execcommands(char **commands, char *binary)
+void		ft_execcommands(char **commands, char *binary)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	while (1)
@@ -28,14 +28,7 @@ void ft_execcommands(char **commands, char *binary)
 		if (pid > 0)
 		{
 			wait(0);
-			break;
+			break ;
 		}
 	}
 }
-
-// void exit_minishell(void)
-// {
-//     // ft_freearraystr(commands);
-//     // ft_strdel(&request);
-//     exit(0);
-// }
