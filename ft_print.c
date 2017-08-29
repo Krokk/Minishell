@@ -6,20 +6,11 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 19:41:19 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 07:17:56 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/29 23:11:53 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *print_pwd(void)
-{
-	char tmp[1024 + 1];
-	char *cwd;
-
-	cwd = getcwd(tmp, 1024);
-	return (cwd);
-}
 
 void exec_echo(char **commands)
 {
@@ -80,12 +71,12 @@ char *parse_cd(int ret, t_env **venv, char **commands)
 	if (ret == 1)
 	{
 		return(ft_strsub(get_venv_value(venv, "HOME"), 5,
-				ft_strlen(get_venv_value(venv, "HOME")) - 3));
+				ft_strlen(get_venv_value(venv, "HOME")) - 5));
 	}
 	else if (ret == 2)
 	{
 		return(ft_strsub(get_venv_value(venv, "OLDPWD"), 7,
-				ft_strlen(get_venv_value(venv, "OLDPWD")) - 5));
+				ft_strlen(get_venv_value(venv, "OLDPWD")) - 6));
 	}
 	if (ret == 3)
 		return (ft_strjoin("/Users/", (commands[1] + 1)));
@@ -104,8 +95,6 @@ void do_cd(char *path, t_env **venv)
 	if ((!access(path, 1)) && chdir(path) == 0)
 	{
 		ft_modify_tenv(venv, "OLDPWD=", oldpwd);
-		ft_putstr("directory changed to : ");
-		ft_putendl(path);
 		cwd = getcwd(tmp, 1024);
 		ft_modify_tenv(venv, "PWD=", cwd);
 	}

@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 05:54:28 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/29 21:12:05 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,35 @@ void print_env(t_env *venv)
 {
 	t_env *tmp;
 
-	tmp = venv;
+	if (venv)
+		tmp = venv;
 	while(tmp)
 	{
 		ft_putendl(tmp->content);
 		tmp = tmp->next;
 	}
+}
+
+char **new_array(char **commands, int trim,t_env **venv)
+{
+	int offset;
+	int i;
+	char **array;
+
+	i = 0;
+	offset = 0;
+	while (commands[i])
+		i++;
+	if (!(array = (char**)malloc(sizeof(char*) * i)))
+		ft_error(0, venv , "Malloc failed");
+	while (commands[trim])
+	{
+		array[offset] = ft_strdup(commands[trim]);
+		offset++;
+		trim++;
+	}
+	array[offset] = NULL;
+	return (array);
 }
 
 t_env *get_venv(char **venv)
@@ -70,25 +93,25 @@ void exec_setenv(char **commands, t_env **venv)
 			add_t_env(venv, commands);
 		else
 		{
-			remove_t_env(venv, commands);
+			remove_t_env(venv, commands, 0);
 			add_t_env(venv, commands);
 		}
 	}
 }
 
-void remove_t_env(t_env **venv, char **commands)
+void remove_t_env(t_env **venv, char **commands, int mode)
 {
 	t_env	*free_this;
 
 	while (*venv)
 	{
-		if (find_t_env_array((*venv)->content, commands))
+		if (mode == 1 || find_t_env_array((*venv)->content, commands))
 		{
 			free_this = *venv;
 			*venv = free_this->next;
 			free(free_this->content);
 			free(free_this);
-			if (commands[1])
+			if (mode != 1 && commands[1])
 				break ;
 		}
 		venv = &(*venv)->next;
@@ -135,6 +158,18 @@ int find_t_env_array(char *env, char **search)
 	return (0);
 }
 
+
+int find_t_env_str(char *venv, char *str)
+{
+	int len;
+
+	len = ft_strlen(str);
+	if (!ft_strncmp(venv, str, len))
+		if (!ft_strncmp((venv + len), "=", 1))
+			return (1);
+	return (0);
+}
+
 int find_t_env_strr(t_env **venv, char *str)
 {
 	int i;
@@ -151,18 +186,6 @@ int find_t_env_strr(t_env **venv, char *str)
 	return (0);
 }
 
-int find_t_env_str(char *venv, char *str)
-{
-	int len;
-
-	len = ft_strlen(str);
-	if (!ft_strncmp(venv, str, len))
-		if (!ft_strncmp((venv + len), "=", 1))
-			return (1);
-	return (0);
-}
-
-
 void exec_unsetenv(char **commands, t_env **venv)
 {
 	int i;
@@ -173,7 +196,7 @@ void exec_unsetenv(char **commands, t_env **venv)
 	if (i != 3)
 		ft_putendl("Usage : unsetenv <Environment variable>");
 	else if (find_t_env(venv, commands))
-		remove_t_env(venv, commands);
+		remove_t_env(venv, commands, 0);
 	else
 		ft_putendl("Environment Variable doesn't exist");
 }

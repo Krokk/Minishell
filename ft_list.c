@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:10:04 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 05:33:59 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/29 23:20:09 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,13 @@ char *get_venv_value(t_env **venv, char *search)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+char *print_pwd(void)
+{
+	char tmp[1024 + 1];
+	char *cwd;
+
+	cwd = getcwd(tmp, 1024);
+	return (cwd);
 }

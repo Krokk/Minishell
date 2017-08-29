@@ -6,7 +6,7 @@
 #    By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/28 17:18:59 by rfabre            #+#    #+#              #
-#    Updated: 2017/03/08 03:33:39 by rfabre           ###   ########.fr        #
+#    Updated: 2017/08/28 21:29:17 by rfabre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ SRC = ft_bzero.c\
 
 OBJDIR = objs
 HEADERFLAGS = -I libft.h
-CC = gcc
+CC = @gcc
 CFLAGS = -Werror -Wall -Wextra
 OBJ = $(addprefix ${OBJDIR}/, $(SRC:.c=.o))
 RM = rm -f
@@ -97,7 +97,6 @@ $(NAME) : $(OBJ)
 	@echo "\t\033[33;32m'MAKE' ->\t\033[1;34m$(NAME)\033[0m :\tLibrary compilation completed successfully !"
 
 ${OBJDIR}/%.o : ./%.c
-	@echo Compiling $@
 	@/bin/mkdir -p ${OBJDIR}
 	@${CC} ${CFLAGS} -I./includes -c -o $@ $<
 

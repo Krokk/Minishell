@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/28 05:17:00 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/30 00:53:03 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void get_request(char **request, t_env **venv)
 	int		ret;
 	char	buf[2];
 
+	ft_bzero(buf, 3);
 	if (!(*request = ft_memalloc(sizeof(char))))
 		ft_error(0, venv, "Malloc failed");
 	while ((ret = read(0, &buf, 1)) && ft_strcmp(buf, "\n"))
@@ -27,6 +28,8 @@ static void get_request(char **request, t_env **venv)
 	if (!ret)
 		ft_error(0, venv, "Read Failure");
 }
+
+
 
 static void check_ifbuiltin(char **commands, t_env **venv)
 {
@@ -42,12 +45,12 @@ static void check_ifbuiltin(char **commands, t_env **venv)
 		print_env(*venv);
 	else if (ft_strequ(commands[0], "pwd"))
 		ft_putendl(print_pwd());
-	else if (ft_strequ(commands[0], "ls"))
-		ft_execcommands(commands, "/bin/ls");
+	// else if (ft_strequ(commands[0], "ls"))
+	// 	ft_execcommands(commands, venv);
 	else if (ft_strequ(commands[0], "clear"))
 		ft_putstr("\033[H\033[J");
 	else
-		ft_putendl("Command not recognized");
+		look_for_binary(commands, venv);
 }
 
 int main(int ac, char **argv, char **venv)
@@ -59,6 +62,7 @@ int main(int ac, char **argv, char **venv)
 
 	(void)ac;
 	(void)argv;
+
 	envv = get_venv(venv);
 	while (1)
 	{
