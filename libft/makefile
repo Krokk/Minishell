@@ -73,7 +73,6 @@ SRC = ft_bzero.c\
 	  ft_lstmap.c\
 	  ft_lstaddend.c\
 	  ft_strndup.c\
-	  ft_strjoinnfree.c\
 	  ft_strjoinmulti.c\
 	  ft_strcspn.c\
 	  ft_putnstr.c\

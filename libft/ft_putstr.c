@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/26 22:09:27 by rfabre            #+#    #+#             */
-/*   Updated: 2016/12/06 21:11:38 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/31 17:36:20 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	ft_putstr(char const *s)
 {
-	if (s != NULL)
-		write(1, s, ft_strlen(s));
+	while (*s != '\0')
+	{
+		ft_putchar(*s);
+		s++;
+	}
 }

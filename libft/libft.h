@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 20:16:41 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/19 12:52:14 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/08/31 16:14:22 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				ft_printstrs(char **str);
 void				ft_lstaddend(t_list **alst, t_list *new);
-char				*ft_strjoinnfree(char *s1, char *s2, size_t len, char b12);
 char				*ft_strndup(const char *s, size_t n);
 char				*ft_strjoinmulti(char const *s1, char const *s2,
 		char const *s3, char const *s4);

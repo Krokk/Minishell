@@ -6,24 +6,11 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/29 21:12:05 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/01 02:51:58 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void print_env(t_env *venv)
-{
-	t_env *tmp;
-
-	if (venv)
-		tmp = venv;
-	while(tmp)
-	{
-		ft_putendl(tmp->content);
-		tmp = tmp->next;
-	}
-}
 
 char **new_array(char **commands, int trim,t_env **venv)
 {
@@ -59,7 +46,7 @@ t_env *get_venv(char **venv)
 	while (venv[i])
 	{
 		if (!(tmp = ft_memalloc(sizeof(t_env))))
-			exit (1);
+			ft_error(0, venv, "Malloc Failed");
 		tmp->content = ft_strdup(venv[i]);
 		ft_lst_add_tenv(&lst, tmp);
 		i++;
@@ -67,28 +54,18 @@ t_env *get_venv(char **venv)
 	return (lst);
 }
 
-/*
-
-   faire tout paser par access pour les appels de commande
-
-   pour les venv
-les : sont les separateur
-aller chercher les binaire dans les path et verifier avec acces( si return 0) executer avec fork
-
-bonus SHLVL ; niveau de profondeur des shell incrementer
-*/
-
-void exec_setenv(char **commands, t_env **venv)
+void exec_setenv(char **commands, t_env **venv, int mode)
 {
 	int i;
 
 	i = 0;
 	while (commands[i++])
 		;
-	if (i != 4)
+	if (i != 4 && mode == 0)
 		ft_putendl("Usage : setenv <Environment variable> <Value>");
-	else
+	else if (i == 4 || mode == 1)
 	{
+		ft_putendl("SETENV");
 		if (!find_t_env(venv, commands))
 			add_t_env(venv, commands);
 		else
@@ -138,6 +115,7 @@ int find_t_env(t_env **venv, char **commands)
 	t_env *tmp;
 
 	tmp = *venv;
+
 	while (tmp)
 	{
 		if (find_t_env_array(tmp->content, commands))

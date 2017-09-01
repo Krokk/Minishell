@@ -6,7 +6,7 @@
 #    By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/21 21:23:59 by rfabre            #+#    #+#              #
-#    Updated: 2017/08/28 05:06:50 by rfabre           ###   ########.fr        #
+#    Updated: 2017/09/01 02:12:19 by rfabre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC = ft_main.c\
 	  ft_exec.c\
 	  ft_env.c\
 	  ft_list.c\
-	  ft_error.c
+	  ft_error.c\
+	  exec_env.c
 
 LIB = ./libft/libft.a
 CC = @cc
