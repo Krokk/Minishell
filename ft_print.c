@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 19:41:19 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 20:45:00 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 21:19:39 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ void exec_cd(char **cmd, t_env **venv)
 	{
 		ret = check_cd(cmd, venv, size);
 		path = parse_cd(ret, venv, cmd);
-		ft_putendl(path);
 		do_cd(path, venv);
 		if (ret != 5)
 			free(path);

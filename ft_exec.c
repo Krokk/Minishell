@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 20:44:38 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 21:37:46 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,41 @@ void		ft_execcommands(char *path, char **commands, t_env **venv)
 	ft_freearraystr(array);
 }
 
+static int found_binary(char **path, char **commands, t_env **venv, int ret)
+{
+	int i;
+	char *tmpp;
+
+	i = 0;
+	while (path[i])
+	{
+		tmpp = ft_strjoin(path[i], commands[0]);
+		if (!(access(tmpp, 1)) && ret == 1)
+			{
+				ft_execcommands(tmpp, commands, venv);
+				free (tmpp);
+				return (1);
+			}
+		if (!(access(commands[0], 1)) && ret == 0)
+			{
+				ft_execcommands(commands[0], commands, venv);
+				free (tmpp);
+				return (1);
+			}
+		i++;
+		free (tmpp);
+	}
+	return (0);
+}
+
 void look_for_binary(char **commands, t_env **venv)
 {
 	t_env *tmp;
 	char **path;
-	int i;
 	int ret;
-	char *tmpp;
+	int found;
 
-	i = 0;
+	found = 0;
 	tmp = *venv;
 	ret = parse_target(&commands[0]);
 	while (tmp)
@@ -99,25 +125,16 @@ void look_for_binary(char **commands, t_env **venv)
 		if (find_t_env_str(tmp->content, "PATH"))
 		{
 			path = ft_strsplit(tmp->content + 5, ':');
-			while (path[i])
+			found = found_binary(path, commands, venv, ret);
+			if (found)
 			{
-				tmpp = ft_strjoin(path[i], commands[0]);
-				if (!(access(tmpp, 1)) && ret == 1)
-					{
-						ft_execcommands(tmpp, commands, venv);
-						free (tmpp);
-						break ;
-					}
-				if (!(access(commands[0], 1)) && ret == 0)
-					{
-						ft_execcommands(commands[0], commands, venv);
-						break ;
-					}
-				i++;
-				free (tmpp);
+				ft_freearraystr(path);
+				break;
 			}
 			ft_freearraystr(path);
 		}
 		tmp = tmp->next;
 	}
+	if (found == 0)
+		ft_putendl("Command not recognized");
 }
