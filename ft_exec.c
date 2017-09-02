@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 01:50:47 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 20:44:38 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,30 @@ int parse_target(char **commands)
 			return (1);
 		}
 	}
+	return (0);
+}
+
+void		ft_execcommands(char *path, char **commands, t_env **venv)
+{
+	pid_t	pid;
+	char    **array;
+
+	array = t_env_to_array(venv);
+	pid = fork();
+	while (1)
+	{
+		if (pid == 0)
+		{
+			wait(&pid);
+			execve(path, commands, array);
+		}
+		if (pid > 0)
+		{
+			wait(0);
+			break ;
+		}
+	}
+	ft_freearraystr(array);
 }
 
 void look_for_binary(char **commands, t_env **venv)
@@ -96,27 +120,4 @@ void look_for_binary(char **commands, t_env **venv)
 		}
 		tmp = tmp->next;
 	}
-}
-
-void		ft_execcommands(char *path, char **commands, t_env **venv)
-{
-	pid_t	pid;
-	char    **array;
-
-	array = t_env_to_array(venv);
-	pid = fork();
-	while (1)
-	{
-		if (pid == 0)
-		{
-			wait(&pid);
-			execve(path, commands, array);
-		}
-		if (pid > 0)
-		{
-			wait(0);
-			break ;
-		}
-	}
-	ft_freearraystr(array);
 }

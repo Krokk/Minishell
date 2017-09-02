@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/01 01:49:16 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 02:56:13 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 21:10:16 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@ void print_env(t_env *venv)
 {
 	t_env *tmp;
 
-	if (venv)
-		tmp = venv;
-	while(tmp)
+	tmp = venv;
+	while (tmp != NULL)
 	{
 		ft_putendl(tmp->content);
 		tmp = tmp->next;
 	}
 }
 
-t_env **create_new_env(t_env **venv)
+t_env *create_new_env(t_env **venv)
 {
     t_env *tmp;
     t_env *lst;
@@ -43,7 +42,7 @@ t_env **create_new_env(t_env **venv)
     return (lst);
 }
 
-void exec_env(char **commands, t_env **venv)
+void exec_env(char **commands, t_env **venv, int *recall)
 {
     t_env *envv;
     int i;
@@ -52,14 +51,18 @@ void exec_env(char **commands, t_env **venv)
     while (commands[i])
         i++;
     if (i == 1)
-        print_env(*venv);
-    else if (i == 4)
+    {
+		if (*venv != NULL)
+			print_env(*venv);
+	}
+    else if (i > 2)
     {
         envv = create_new_env(venv);
         exec_setenv(commands, &envv, 1);
-        check_ifbuiltin(commands + 3, &envv);
-        remove_t_env(1, commands, envv);
+		(*recall)++;
+		check_ifbuiltin(commands + 3, &envv, recall);
+		if (i == 3)
+			print_env(envv);
+		remove_t_env(&envv);
     }
-    else
-        ft_putendl("Usage : env> or <env> <environment variable> <value> <command>");
 }

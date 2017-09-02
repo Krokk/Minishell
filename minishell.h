@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 02:24:21 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 20:49:25 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef	struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-void check_ifbuiltin(char **commands, t_env **venv);
+void check_ifbuiltin(char **commands, t_env **venv, int *recall);
 int parse_target(char **commands);
 void look_for_binary(char **commands, t_env **venv);
 t_env  *ft_copy_t_env(t_env **venv);
@@ -31,7 +31,6 @@ char **new_array(char **commands, int trim,t_env **venv);
 int check_cd(char **commands, t_env **venv, int size);
 char *get_venv_value(t_env **venv, char *search);
 int ft_modify_tenv(t_env **venv, char *new, char *contents);
-void execrealcommand(char **commands);
 void print_pwd(void);
 void exec_pwd(char **commands);
 void exec_echo(char **commands);
@@ -46,13 +45,14 @@ void		ft_execcommands(char *path, char **commands, t_env **venv);
 void exec_setenv(char **commands, t_env **venv, int mode);
 void add_t_env(t_env **venv, char **commands);
 int find_t_env(t_env **venv, char **commands);
-void remove_t_env(t_env **venv, char **commands, int mode);
+void remove_t_env(t_env **venv);
+void remove_one_t_env(t_env **venv, char **commands);
 void exec_unsetenv(char **commands, t_env **venv);
 int find_t_env_str(char *venv, char *str);
 int find_t_env_strr(t_env **venv, char *str);
 int find_t_env_array(char *env, char **search);
 int ft_error(int erno, t_env **venv, char *msg);
-int exit_shell(void);
+void exit_shell(char **cmd, t_env **env);
 char **t_env_to_array(t_env **venv);
-void exec_env(char **commands, t_env **venv);
+void exec_env(char **commands, t_env **venv, int *recall);
 #endif

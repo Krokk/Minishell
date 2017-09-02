@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 02:51:58 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 21:11:04 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_env *get_venv(char **venv)
 	while (venv[i])
 	{
 		if (!(tmp = ft_memalloc(sizeof(t_env))))
-			ft_error(0, venv, "Malloc Failed");
+			ft_error(0, &lst, "Malloc Failed");
 		tmp->content = ft_strdup(venv[i]);
 		ft_lst_add_tenv(&lst, tmp);
 		i++;
@@ -57,41 +57,43 @@ t_env *get_venv(char **venv)
 void exec_setenv(char **commands, t_env **venv, int mode)
 {
 	int i;
+	char *tmp;
 
 	i = 0;
 	while (commands[i++])
 		;
 	if (i != 4 && mode == 0)
 		ft_putendl("Usage : setenv <Environment variable> <Value>");
-	else if (i == 4 || mode == 1)
+	else if (i > 3 || mode == 1)
 	{
-		ft_putendl("SETENV");
 		if (!find_t_env(venv, commands))
 			add_t_env(venv, commands);
 		else
 		{
-			remove_t_env(venv, commands, 0);
-			add_t_env(venv, commands);
+			tmp = ft_strjoin((commands[1]), "=");
+			ft_modify_tenv(venv, tmp, commands[2]);
+			free(tmp);
 		}
 	}
 }
 
-void remove_t_env(t_env **venv, char **commands, int mode)
+void remove_t_env(t_env **venv)
 {
-	t_env	*free_this;
+	t_env	*tmp;
 
-	while (*venv)
+	tmp = *venv;
+	while (tmp != NULL)
 	{
-		if (mode == 1 || find_t_env_array((*venv)->content, commands))
-		{
-			free_this = *venv;
-			*venv = free_this->next;
-			free(free_this->content);
-			free(free_this);
-			if (mode != 1 && commands[1])
-				break ;
-		}
-		venv = &(*venv)->next;
+			tmp = *venv;
+			if (tmp->next)
+				*venv = (*venv)->next;
+			else
+			{
+				ft_strdel(&tmp->content);
+				break;
+			}
+			ft_strdel(&tmp->content);
+			free(tmp);
 	}
 }
 
@@ -174,7 +176,7 @@ void exec_unsetenv(char **commands, t_env **venv)
 	if (i != 3)
 		ft_putendl("Usage : unsetenv <Environment variable>");
 	else if (find_t_env(venv, commands))
-		remove_t_env(venv, commands, 0);
+		remove_one_t_env(venv, commands);
 	else
 		ft_putendl("Environment Variable doesn't exist");
 }

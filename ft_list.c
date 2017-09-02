@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:10:04 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 01:40:10 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 21:14:11 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,7 @@ char *get_venv_value(t_env **venv, char *search)
 
 void print_pwd(void)
 {
-	char *tmp;
-	char *cwd;
+	char tmp[1024 + 1];
 
-	tmp = NULL;
-	cwd = getcwd(tmp, NULL);
-	free(tmp);
-	ft_putendl(cwd);
-	free(cwd);
+	ft_putendl(getcwd(tmp, 1024));
 }

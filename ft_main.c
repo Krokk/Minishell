@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/01 02:24:13 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/02 20:47:51 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void get_request(char **request, t_env **venv)
 
 
 
-void check_ifbuiltin(char **commands, t_env **venv)
+void check_ifbuiltin(char **commands, t_env **venv, int *recall)
 {
 	if (commands[0] != NULL)
 	{
@@ -45,7 +45,7 @@ void check_ifbuiltin(char **commands, t_env **venv)
 		else if (ft_strequ(commands[0], "unsetenv"))
 			exec_unsetenv(commands, venv);
 		else if (ft_strequ(commands[0], "env"))
-			exec_env(commands, venv);
+			exec_env(commands, venv, recall);
 		else if (ft_strequ(commands[0], "pwd"))
 			print_pwd();
 		else if (ft_strequ(commands[0], "clear"))
@@ -61,13 +61,14 @@ int main(int ac, char **argv, char **venv)
 	char **commands;
 	t_env *envv;
 	char *parsed_commands;
+	int recall;
 
 	(void)ac;
 	(void)argv;
-
 	envv = get_venv(venv);
 	while (1)
 	{
+		recall = 0;
 		ft_putstr("$> ");
 		get_request(&request, &envv);
 		commands = ft_strsplit(request,' ');
@@ -75,11 +76,8 @@ int main(int ac, char **argv, char **venv)
 		parsed_commands = ft_strtrim(*commands);
 		free(parsed_commands);
 		if (ft_strequ(commands[0], "exit"))
-		{
-			ft_freearraystr(commands);
-			exit (0);
-		}
-		check_ifbuiltin(commands, &envv);
+			exit_shell(commands, &envv);
+		check_ifbuiltin(commands, &envv, &recall);
 		ft_freearraystr(commands);
 	}
 	return (0);

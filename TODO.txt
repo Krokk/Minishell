@@ -9,12 +9,13 @@ SETENV : OK
 
 UNSETENV : OK
 
-ENV :  gerer l ajout de variable d environnemet temporaire : "env HOME=test cd ~" do_new_line
-segfault sure le remove_t_env;
-remettre environment origine.
+ENV :  OK , bonus env -i
 
 EXECVE : OK
 
 CLEAR : OK
 
 LEAKS : OK
+
+bonus : couleur
+bonus : shlvl1
