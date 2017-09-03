@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:37:46 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 03:32:27 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,21 @@ void		ft_execcommands(char *path, char **commands, t_env **venv)
 	}
 	ft_freearraystr(array);
 }
+static int acces_chk(char *path, t_env **venv)
+{
+	struct stats s;
 
+	if (!access(path, F_OK))
+	{
+		if (lstat(path, &s) != -1 && !(S_ISDIR(s.st_mode)) && !access(path, X_OK))
+			return (1);
+		else
+			ft_error(2, venv, "Permission denied");
+	}
+	else
+		ft_error(2, venv, "No such file or directory");
+	return (0);
+}
 static int found_binary(char **path, char **commands, t_env **venv, int ret)
 {
 	int i;
@@ -92,13 +106,13 @@ static int found_binary(char **path, char **commands, t_env **venv, int ret)
 	while (path[i])
 	{
 		tmpp = ft_strjoin(path[i], commands[0]);
-		if (!(access(tmpp, 1)) && ret == 1)
+		if (access_chk(tmpp, venv) && ret == 1)
 			{
 				ft_execcommands(tmpp, commands, venv);
 				free (tmpp);
 				return (1);
 			}
-		if (!(access(commands[0], 1)) && ret == 0)
+		else if (access_chk(commands[0], venv) && ret == 0)
 			{
 				ft_execcommands(commands[0], commands, venv);
 				free (tmpp);

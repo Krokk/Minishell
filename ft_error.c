@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/28 03:42:40 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:15:18 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 03:30:47 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int ft_error(int erno, t_env **venv, char *msg)
 {
-    ft_putendl_fd("Minishell : ", 2);
+    ft_putstr_fd("Minishell : ", 2);
     if (erno == 0)
     {
         ft_putendl_fd(msg, 2);
         remove_t_env(venv);
         exit (1);
     }
-    exit (1);
+    else if (erno == 2)
+      ft_putendl_fd(msg);
 }
 
 //

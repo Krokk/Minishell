@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:26:18 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 03:36:30 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 # include "./libft/libft.h"
 # include <unistd.h>
-# include <stdio.h>
 # include <sys/types.h>
 # include <dirent.h>
 typedef	struct		s_env
