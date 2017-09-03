@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/19 12:49:51 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 15:33:18 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 21:40:06 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ void	ft_freearraystr(char **array)
 {
 	int	i;
 
-	i = -1;
-	while (array[++i])
+	if (array)
 	{
-		ft_strdel(&array[i]);
-		free(array[i]);
+		i = -1;
+		while (array[++i])
+		{
+			ft_strdel(&array[i]);
+			free(array[i]);
+		}
+		free(array);
 	}
-	free(array);
 }

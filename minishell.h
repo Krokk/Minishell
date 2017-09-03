@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 18:29:05 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 21:01:08 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int					found_binary(char **path, char **commands, t_env **venv,
 	int ret);
 void				check_ifbuiltin(char **commands, t_env **venv,
 	int *recall);
-int					parse_target(char **commands);
+int					parse_target(char **commands, t_env **venv);
 void				look_for_binary(char **commands, t_env **venv);
 t_env				*ft_copy_t_env(t_env **venv);
 char				**new_array(char **commands, int trim, t_env **venv);

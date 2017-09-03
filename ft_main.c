@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 18:01:53 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 22:39:22 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static	void	get_request(char **request, t_env **venv)
 {
 	int			ret;
 	char		buf[2];
+	char		*tmp;
 
 	ret = 0;
 	ft_bzero(buf, 3);
@@ -26,6 +27,13 @@ static	void	get_request(char **request, t_env **venv)
 		buf[ret] = '\0';
 		*request = ft_freejoinstr(*request, buf);
 	}
+	tmp = ft_strtrim(*request);
+	if (ret)
+	{
+		free (*request);
+		*request = tmp;
+	}
+
 	if (ret == -1)
 		ft_error(0, venv, "Read Failure");
 }
@@ -53,8 +61,11 @@ void			check_ifbuiltin(char **commands, t_env **venv, int *recall)
 	}
 }
 
-static void		print_prompt(void)
+static void		print_prompt(int ac, char **argv)
 {
+	(void)ac;
+	(void)argv;
+
 	ft_putstr(BLUE);
 	ft_putstr("$>> ");
 	ft_putstr(DEFAULT);
@@ -68,13 +79,11 @@ int				main(int ac, char **argv, char **venv)
 	char		*parsed_commands;
 	int			recall;
 
-	(void)ac;
-	(void)argv;
 	envv = get_venv(venv);
 	while (1)
 	{
 		recall = 0;
-		print_prompt();
+		print_prompt(ac, argv);
 		get_request(&request, &envv);
 		commands = ft_strsplit(request, ' ');
 		free(request);

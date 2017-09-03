@@ -6,20 +6,29 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 19:41:19 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 16:05:38 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 20:52:00 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_size(char **commands)
+static int	get_size(char **commands, int mode)
 {
 	int		i;
 
-	i = 0;
-	while (commands[i])
-		i++;
-	return (i);
+	if (mode == 1)
+	{
+		i = 0;
+		while (commands[i])
+			i++;
+		return (i);
+	}
+	if (mode == 2)
+	{
+		ft_putendl("'OLDPWD' variable not found");
+		return (5);
+	}
+	return (0);
 }
 
 int			check_cd(char **command, t_env **venv, int size)
@@ -39,7 +48,7 @@ int			check_cd(char **command, t_env **venv, int size)
 		if (find_t_env_strr(venv, "OLDPWD"))
 			return (2);
 		else
-			ft_putendl("'OLDPWD' variable not found");
+			return (get_size(command, 2));
 	}
 	else if (!(ft_strncmp(command[1], "~/", 2)))
 	{
@@ -76,7 +85,7 @@ char		*parse_cd(int ret, t_env **venv, char **commands)
 	if (ret == 0)
 		return (ft_strdup(commands[1]));
 	else
-		return ("");
+		return (NULL);
 }
 
 void		do_cd(char *path, t_env **venv)
@@ -107,14 +116,15 @@ void		exec_cd(char **cmd, t_env **venv)
 	int		size;
 	char	*path;
 
-	size = get_size(cmd);
+	size = get_size(cmd, 1);
 	if (size != 2 && size != 1)
 		ft_putendl("usage : cd <directory>");
 	else
 	{
 		ret = check_cd(cmd, venv, size);
 		path = parse_cd(ret, venv, cmd);
-		do_cd(path, venv);
+		if (path != NULL)
+			do_cd(path, venv);
 		if (ret != 5)
 			free(path);
 	}

@@ -6,20 +6,26 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 15:57:31 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 22:36:49 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				parse_target(char **commands)
+int				parse_target(char **commands, t_env **venv)
 {
 	char		*tmp;
 
 	if (commands != NULL)
 	{
-		if (!ft_strncmp(*commands, "./", 2) || !ft_strncmp(*commands, "/", 1))
+		if ((!ft_strncmp(commands[0], "./", 2) && commands[0][2] )|| (!ft_strncmp(commands[0], "/", 1) && commands[0][1]))
+		{
+			if (!ft_access_chk(commands[0], venv))
+				ft_execcommands(commands[0], commands, venv);
+			else
+				ft_putendl("Command not recognized");
 			return (0);
+		}
 		else
 		{
 			tmp = ft_strjoin("/", commands[0]);
@@ -39,17 +45,13 @@ void			ft_execcommands(char *path, char **commands, t_env **venv)
 	array = t_env_to_array(venv);
 	if ((pid = fork()) == -1)
 		ft_error(0, venv, "Fork failed");
-	while (1)
+	if (!pid)
 	{
-		if (pid == 0)
-		{
-			execve(path, commands, array);
-		}
-		if (pid > 0)
-		{
-			wait(0);
-			break ;
-		}
+		execve(path, commands, array);
+	}
+	else
+	{
+		waitpid(pid, NULL, 0);
 	}
 	ft_freearraystr(array);
 }
@@ -105,8 +107,8 @@ void			look_for_binary(char **commands, t_env **venv)
 
 	found = 0;
 	tmp = *venv;
-	ret = parse_target(&commands[0]);
-	while (tmp)
+	ret = parse_target(commands, venv);
+	while (tmp && ret)
 	{
 		if (find_t_env_str(tmp->content, "PATH"))
 		{
@@ -121,6 +123,6 @@ void			look_for_binary(char **commands, t_env **venv)
 		}
 		tmp = tmp->next;
 	}
-	if (found == 0)
+	if (found == 0 && ret == 1)
 		ft_putendl("Command not recognized");
 }
