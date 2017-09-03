@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 03:52:49 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 04:21:40 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ typedef	struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-int acces_chk(char *path, t_env **venv);
+int ft_access_chk(char *path, t_env **venv);
+int found_binary(char **path, char **commands, t_env **venv, int ret);
 void check_ifbuiltin(char **commands, t_env **venv, int *recall);
 int parse_target(char **commands);
 void look_for_binary(char **commands, t_env **venv);

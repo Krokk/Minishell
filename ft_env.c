@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:11:04 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 04:43:19 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,11 +152,9 @@ int find_t_env_str(char *venv, char *str)
 
 int find_t_env_strr(t_env **venv, char *str)
 {
-	int i;
 	t_env *tmp;
 
 	tmp = *venv;
-	i = 0;
 	while (tmp)
 	{
 		if (find_t_env_str(tmp->content, str))

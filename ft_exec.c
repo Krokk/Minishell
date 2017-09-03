@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 03:57:57 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 04:39:00 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ void		ft_execcommands(char *path, char **commands, t_env **venv)
 	char    **array;
 
 	array = t_env_to_array(venv);
-	pid = fork();
+	if ((pid = fork()) == -1)
+		ft_error(0, venv, "Fork failed");
 	while (1)
 	{
 		if (pid == 0)
 		{
-			wait(&pid);
 			execve(path, commands, array);
 		}
 		if (pid > 0)
@@ -82,22 +82,22 @@ void		ft_execcommands(char *path, char **commands, t_env **venv)
 	}
 	ft_freearraystr(array);
 }
-int acces_chk(char *path, t_env **venv)
+
+int ft_access_chk(char *path, t_env **venv)
 {
 	struct stat s;
 
 	if (!access(path, F_OK))
 	{
 		if (lstat(path, &s) != -1 && !(S_ISDIR(s.st_mode)) && !access(path, X_OK))
-			return (1);
+			return (0);
 		else
 			ft_error(2, venv, "Permission denied");
 	}
-	else
-		ft_error(2, venv, "No such file or directory");
-	return (0);
+	return (1);
 }
-static int found_binary(char **path, char **commands, t_env **venv, int ret)
+
+int found_binary(char **path, char **commands, t_env **venv, int ret)
 {
 	int i;
 	char *tmpp;
@@ -106,13 +106,13 @@ static int found_binary(char **path, char **commands, t_env **venv, int ret)
 	while (path[i])
 	{
 		tmpp = ft_strjoin(path[i], commands[0]);
-		if ((access_chk(tmpp, venv)) && ret == 1)
+		if (!(ft_access_chk(tmpp, venv)) && ret == 1)
 			{
 				ft_execcommands(tmpp, commands, venv);
 				free (tmpp);
 				return (1);
 			}
-		else if ((access_chk(commands[0], venv)) && ret == 0)
+		else if (!(ft_access_chk(commands[0], venv)) && ret == 0)
 			{
 				ft_execcommands(commands[0], commands, venv);
 				free (tmpp);
