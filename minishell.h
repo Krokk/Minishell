@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 03:36:30 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 03:52:49 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 # include "./libft/libft.h"
 # include <unistd.h>
+# include <sys/stat.h>
+# include <stdio.h>
 # include <sys/types.h>
 # include <dirent.h>
 typedef	struct		s_env
@@ -22,6 +24,7 @@ typedef	struct		s_env
 	struct s_env	*next;
 }					t_env;
 
+int acces_chk(char *path, t_env **venv);
 void check_ifbuiltin(char **commands, t_env **venv, int *recall);
 int parse_target(char **commands);
 void look_for_binary(char **commands, t_env **venv);

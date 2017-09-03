@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/28 03:42:40 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 03:30:47 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 03:56:16 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int ft_error(int erno, t_env **venv, char *msg)
         exit (1);
     }
     else if (erno == 2)
-      ft_putendl_fd(msg);
+      ft_putendl_fd(msg, 2);
+    return (0);
 }
 
 //
