@@ -1,54 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec.c                                          :+:      :+:    :+:   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 04:39:00 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 15:57:31 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **t_env_to_array(t_env **venv)
+int				parse_target(char **commands)
 {
-	int i;
-	char **result;
-	t_env *tmp;
-	int j;
-
-	j = 0;
-	tmp = *venv;
-	while (*venv)
-	{
-		j++;
-		venv = &(*venv)->next;
-	}
-	if (tmp != NULL)
-	{
-		if (!(result = ft_memalloc(sizeof(char**) * (j + 1))))
-			return (NULL);
-		i = -1;
-		while (tmp)
-		{
-			result[++i] = ft_strdup(tmp->content);
-			tmp = tmp->next;
-		}
-		return (result);
-	}
-	return (NULL);
-}
-
-int parse_target(char **commands)
-{
-	char *tmp;
+	char		*tmp;
 
 	if (commands != NULL)
 	{
 		if (!ft_strncmp(*commands, "./", 2) || !ft_strncmp(*commands, "/", 1))
-				return (0);
+			return (0);
 		else
 		{
 			tmp = ft_strjoin("/", commands[0]);
@@ -60,10 +31,10 @@ int parse_target(char **commands)
 	return (0);
 }
 
-void		ft_execcommands(char *path, char **commands, t_env **venv)
+void			ft_execcommands(char *path, char **commands, t_env **venv)
 {
-	pid_t	pid;
-	char    **array;
+	pid_t		pid;
+	char		**array;
 
 	array = t_env_to_array(venv);
 	if ((pid = fork()) == -1)
@@ -83,13 +54,14 @@ void		ft_execcommands(char *path, char **commands, t_env **venv)
 	ft_freearraystr(array);
 }
 
-int ft_access_chk(char *path, t_env **venv)
+int				ft_access_chk(char *path, t_env **venv)
 {
-	struct stat s;
+	struct stat	s;
 
 	if (!access(path, F_OK))
 	{
-		if (lstat(path, &s) != -1 && !(S_ISDIR(s.st_mode)) && !access(path, X_OK))
+		if (lstat(path, &s) != -1 && !(S_ISDIR(s.st_mode)) &&
+				!access(path, X_OK))
 			return (0);
 		else
 			ft_error(2, venv, "Permission denied");
@@ -97,39 +69,39 @@ int ft_access_chk(char *path, t_env **venv)
 	return (1);
 }
 
-int found_binary(char **path, char **commands, t_env **venv, int ret)
+int				found_binary(char **path, char **command, t_env **venv, int ret)
 {
-	int i;
-	char *tmpp;
+	int			i;
+	char		*tmpp;
 
 	i = 0;
 	while (path[i])
 	{
-		tmpp = ft_strjoin(path[i], commands[0]);
+		tmpp = ft_strjoin(path[i], command[0]);
 		if (!(ft_access_chk(tmpp, venv)) && ret == 1)
-			{
-				ft_execcommands(tmpp, commands, venv);
-				free (tmpp);
-				return (1);
-			}
-		else if (!(ft_access_chk(commands[0], venv)) && ret == 0)
-			{
-				ft_execcommands(commands[0], commands, venv);
-				free (tmpp);
-				return (1);
-			}
+		{
+			ft_execcommands(tmpp, command, venv);
+			free(tmpp);
+			return (1);
+		}
+		else if (!(ft_access_chk(command[0], venv)) && ret == 0)
+		{
+			ft_execcommands(command[0], command, venv);
+			free(tmpp);
+			return (1);
+		}
 		i++;
-		free (tmpp);
+		free(tmpp);
 	}
 	return (0);
 }
 
-void look_for_binary(char **commands, t_env **venv)
+void			look_for_binary(char **commands, t_env **venv)
 {
-	t_env *tmp;
-	char **path;
-	int ret;
-	int found;
+	t_env		*tmp;
+	char		**path;
+	int			ret;
+	int			found;
 
 	found = 0;
 	tmp = *venv;
@@ -143,7 +115,7 @@ void look_for_binary(char **commands, t_env **venv)
 			if (found)
 			{
 				ft_freearraystr(path);
-				break;
+				break ;
 			}
 			ft_freearraystr(path);
 		}

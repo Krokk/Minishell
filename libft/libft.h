@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 20:16:41 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/31 16:14:22 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 18:24:42 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+
+# define DEFAULT "\033[0m"
+# define BLACK "\033[30m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define PURPLE "\033[35m"
+# define TURQUOISE "\033[36m"
 
 typedef	struct		s_list
 {
@@ -87,9 +96,9 @@ void				ft_printstrs(char **str);
 void				ft_lstaddend(t_list **alst, t_list *new);
 char				*ft_strndup(const char *s, size_t n);
 char				*ft_strjoinmulti(char const *s1, char const *s2,
-		char const *s3, char const *s4);
+		char const *s3);
 size_t				ft_strcspn(const char *str1, char str2);
 void				ft_putnstr(char const *s, size_t n);
-char		*ft_freejoinstr(char *dst, char *src);
-void   ft_freearraystr(char **array);
+char				*ft_freejoinstr(char *dst, char *src);
+void				ft_freearraystr(char **array);
 #endif

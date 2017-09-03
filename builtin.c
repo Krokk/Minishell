@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freearraystr.c                                  :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/19 12:49:51 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 15:33:18 by rfabre           ###   ########.fr       */
+/*   Created: 2017/09/03 15:55:44 by rfabre            #+#    #+#             */
+/*   Updated: 2017/09/03 15:55:51 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_freearraystr(char **array)
+void		exec_echo(char **commands)
 {
-	int	i;
+	int		i;
+	int		do_new_line;
 
-	i = -1;
-	while (array[++i])
+	do_new_line = 1;
+	i = 1;
+	if (ft_strequ(commands[1], "-n"))
 	{
-		ft_strdel(&array[i]);
-		free(array[i]);
+		do_new_line = 0;
+		i++;
 	}
-	free(array);
+	while (commands[i])
+	{
+		if ((do_new_line == 1 && i > 1) || i > 2)
+			ft_putstr(" ");
+		ft_putstr(commands[i]);
+		i++;
+	}
+	if (do_new_line)
+		ft_putstr("\n");
 }

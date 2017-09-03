@@ -106,6 +106,6 @@ clean :
 
 fclean : clean
 	@$(RM) $(NAME)
-	@echo "\t\033[1;31m'FCLEAN' ->\tDestruction\033[0m of library \033[1;34m$(NAME)\033[0m completed successfully !"
+	@echo "\t\033[1;31m'FCLEAN' ->\tDestruction\033[0m     library \033[1;34m$(NAME)\033[0m completed successfully !"
 
 re : fclean all

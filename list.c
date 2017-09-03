@@ -6,15 +6,15 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:10:04 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:14:11 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 15:17:13 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			ft_lst_add_tenv(t_env **alst, t_env *new)
+void		ft_lst_add_tenv(t_env **alst, t_env *new)
 {
-	t_env		*lst;
+	t_env	*lst;
 
 	lst = *alst;
 	if (lst == NULL)
@@ -29,11 +29,11 @@ void			ft_lst_add_tenv(t_env **alst, t_env *new)
 	}
 }
 
-int ft_modify_tenv(t_env **venv, char *new, char *contents)
+int			ft_modify_tenv(t_env **venv, char *new, char *contents)
 {
-	t_env *tmp;
-	char *buf;
-	t_env *tmpp;
+	t_env	*tmp;
+	char	*buf;
+	t_env	*tmpp;
 
 	tmp = *venv;
 	buf = ft_strjoin(new, contents);
@@ -56,23 +56,23 @@ int ft_modify_tenv(t_env **venv, char *new, char *contents)
 	return (0);
 }
 
-char *get_venv_value(t_env **venv, char *search)
+char		*get_venv_value(t_env **venv, char *search)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = *venv;
 	while (tmp)
 	{
 		if (find_t_env_str(tmp->content, search))
-			return(tmp->content);
+			return (tmp->content);
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
-void print_pwd(void)
+void		print_pwd(void)
 {
-	char tmp[1024 + 1];
+	char	tmp[1024 + 1];
 
 	ft_putendl(getcwd(tmp, 1024));
 }

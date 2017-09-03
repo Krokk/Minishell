@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 17:17:32 by rfabre            #+#    #+#             */
-/*   Updated: 2017/08/31 21:46:36 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 16:07:50 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char			**ft_strsplit(char const *s, char c)
 	{
 		while (*s == c && *s != '\0')
 			s++;
-		t[index] = ft_strsub((const char *)s, 0, ft_wlen((const char *)s , c));
+		t[index] = ft_strsub((const char *)s, 0, ft_wlen((const char *)s, c));
 		if (t[index] == NULL)
 			return (NULL);
 		s = s + ft_wlen(s, c);

@@ -6,16 +6,16 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/02 21:26:39 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/03 18:01:53 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void get_request(char **request, t_env **venv)
+static	void	get_request(char **request, t_env **venv)
 {
-	int		ret;
-	char	buf[2];
+	int			ret;
+	char		buf[2];
 
 	ret = 0;
 	ft_bzero(buf, 3);
@@ -30,9 +30,7 @@ static void get_request(char **request, t_env **venv)
 		ft_error(0, venv, "Read Failure");
 }
 
-
-
-void check_ifbuiltin(char **commands, t_env **venv, int *recall)
+void			check_ifbuiltin(char **commands, t_env **venv, int *recall)
 {
 	if (commands[0] != NULL)
 	{
@@ -55,13 +53,20 @@ void check_ifbuiltin(char **commands, t_env **venv, int *recall)
 	}
 }
 
-int main(int ac, char **argv, char **venv)
+static void		print_prompt(void)
 {
-	char *request;
-	char **commands;
-	t_env *envv;
-	char *parsed_commands;
-	int recall;
+	ft_putstr(BLUE);
+	ft_putstr("$>> ");
+	ft_putstr(DEFAULT);
+}
+
+int				main(int ac, char **argv, char **venv)
+{
+	char		*request;
+	char		**commands;
+	t_env		*envv;
+	char		*parsed_commands;
+	int			recall;
 
 	(void)ac;
 	(void)argv;
@@ -69,9 +74,9 @@ int main(int ac, char **argv, char **venv)
 	while (1)
 	{
 		recall = 0;
-		ft_putstr("$> ");
+		print_prompt();
 		get_request(&request, &envv);
-		commands = ft_strsplit(request,' ');
+		commands = ft_strsplit(request, ' ');
 		free(request);
 		parsed_commands = ft_strtrim(*commands);
 		free(parsed_commands);
