@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/15 15:33:22 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 21:01:08 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/04 23:49:42 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef	struct		s_env
 int					ft_access_chk(char *path, t_env **venv);
 int					found_binary(char **path, char **commands, t_env **venv,
 	int ret);
-void				check_ifbuiltin(char **commands, t_env **venv,
+void				check_if_builtin(char **commands, t_env **venv,
 	int *recall);
 int					parse_target(char **commands, t_env **venv);
 void				look_for_binary(char **commands, t_env **venv);
@@ -43,10 +43,10 @@ void				exec_echo(char **commands);
 void				exec_cd(char **commands, t_env **venv);
 void				ft_lst_add_tenv(t_env **alst, t_env *new);
 void				print_env(t_env *venv);
-t_env				*get_venv(char **venv);
+t_env				*get_venv(char **venv, int ac, char **argv);
+void				print_prompt(void);
 void				do_cd(char *path, t_env **venv);
 char				*parse_cd(int ret, t_env **venv, char **commands);
-void				exit_minishell(char **commands, char *request);
 void				ft_execcommands(char *path, char **commands, t_env **venv);
 void				exec_setenv(char **commands, t_env **venv, int mode);
 void				add_t_env(t_env **venv, char **commands);

@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/01 01:49:16 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 21:21:54 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/04 23:49:44 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,16 @@ void		print_env(t_env *venv)
 	}
 }
 
-static void exec_no_env(char **commands, int *recall)
+static void	exec_no_env(char **commands, int *recall)
 {
 	t_env	*empty;
-	t_env   *lst;
+	t_env	*lst;
 
 	lst = NULL;
 	empty = ft_memalloc(sizeof(t_env));
 	empty->content = ft_strnew(0);
 	ft_lst_add_tenv(&lst, empty);
-	check_ifbuiltin(commands + 2, &lst, recall);
+	check_if_builtin(commands + 2, &lst, recall);
 	remove_t_env(&lst);
 }
 
@@ -107,7 +107,7 @@ void		exec_env(char **commands, t_env **venv, int *recall)
 		else if (i == 3 && !ft_strequ(commands[1], "-i"))
 			print_env(envv);
 		else
-			check_ifbuiltin(commands + 3, &envv, recall);
+			check_if_builtin(commands + 3, &envv, recall);
 		remove_t_env(&envv);
 	}
 }

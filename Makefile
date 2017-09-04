@@ -6,13 +6,13 @@
 #    By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/08/21 21:23:59 by rfabre            #+#    #+#              #
-#    Updated: 2017/09/03 22:40:22 by rfabre           ###   ########.fr        #
+#    Updated: 2017/09/04 20:02:49 by rfabre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY : all clean fclean re
 NAME = minishell
-CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -Wall -Wextra -Werror -g
 SRC = ft_main.c\
 	  builtin.c\
 	  exec_cd.c\

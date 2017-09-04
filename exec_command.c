@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:22:31 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 22:36:49 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/04 19:59:12 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int				parse_target(char **commands, t_env **venv)
 
 	if (commands != NULL)
 	{
-		if ((!ft_strncmp(commands[0], "./", 2) && commands[0][2] )|| (!ft_strncmp(commands[0], "/", 1) && commands[0][1]))
+		if ((!ft_strncmp(commands[0], "./", 2) && commands[0][2]) ||
+			(!ft_strncmp(commands[0], "/", 1) && commands[0][1]))
 		{
 			if (!ft_access_chk(commands[0], venv))
 				ft_execcommands(commands[0], commands, venv);

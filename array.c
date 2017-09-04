@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 21:21:33 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/03 18:02:46 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/04 23:06:57 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ char		**new_array(char **commands, int trim, t_env **venv)
 	return (array);
 }
 
-t_env		*get_venv(char **venv)
+t_env		*get_venv(char **venv, int ac, char **argv)
 {
 	int		i;
 	t_env	*lst;
 	t_env	*tmp;
 
+	(void)ac;
+	(void)argv;
 	tmp = NULL;
 	lst = NULL;
 	i = 0;
@@ -60,10 +62,10 @@ void		remove_t_env(t_env **venv)
 
 	while (*venv != NULL)
 	{
-		tmp = *venv;
+		tmp = (*venv)->next;
 		ft_strdel(&((*venv)->content));
 		free(*venv);
-		(*venv) = tmp->next;
+		(*venv) = tmp;
 	}
 }
 
