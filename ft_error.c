@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/28 03:42:40 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/04 23:47:32 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/09 17:48:08 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void		remove_one_t_env(t_env **venv, char **commands)
 
 void		print_prompt(void)
 {
+	char	tmp[1024 + 1];
+
 	ft_putstr(BLUE);
+	ft_putstr(getcwd(tmp, 1024));
 	ft_putstr("$>> ");
 	ft_putstr(DEFAULT);
 }

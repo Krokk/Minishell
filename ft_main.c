@@ -6,7 +6,7 @@
 /*   By: rfabre <rfabre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 17:26:28 by rfabre            #+#    #+#             */
-/*   Updated: 2017/09/04 23:48:41 by rfabre           ###   ########.fr       */
+/*   Updated: 2017/09/09 17:41:47 by rfabre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static void		get_request(t_env **venv, t_env **cmd, int *recall)
 	char		*request;
 
 	ret = 0;
-	print_prompt();
 	recall = 0;
+	print_prompt();
 	ft_bzero(buf, 3);
 	if (!(request = ft_memalloc(sizeof(char))))
 		ft_error(0, venv, "Malloc failed");
@@ -89,14 +89,19 @@ void			check_if_builtin(char **commands, t_env **venv, int *recall)
 	}
 }
 
-static void		check_exit_norme(char **commands, t_env **venv,
-		t_env **multi_cmd)
+static void		check_exit_norme(t_env **venv, t_env **cmd, char *content)
 {
-	if (ft_strequ(commands[0], "exit"))
+	int			i;
+	t_env		*tmp;
+
+	tmp = *cmd;
+	i = -1;
+	while (tmp->content[++i])
+		tmp->content[i] = (tmp->content[i] == '\t') ? ' ' : tmp->content[i];
+	if (ft_strequ(content, "exit"))
 	{
 		remove_t_env(venv);
-		ft_freearraystr(commands);
-		remove_t_env(multi_cmd);
+		remove_t_env(cmd);
 		exit(0);
 	}
 }
@@ -117,8 +122,8 @@ int				main(int ac, char **argv, char **venv)
 		tmp = multi_cmd;
 		while (tmp)
 		{
+			check_exit_norme(&envv, &tmp, tmp->content);
 			commands = ft_strsplit(tmp->content, ' ');
-			check_exit_norme(commands, &envv, &multi_cmd);
 			check_if_builtin(commands, &envv, &recall);
 			ft_freearraystr(commands);
 			tmp = tmp->next;
